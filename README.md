@@ -1,3 +1,19 @@
+# CS Build Week 1
+
+For your first CS Build Week, you will be building an interactive ***Multi-User Dungeon (MUD)*** client and server in groups. To succeed with this project, you will be applying knowledge you've learned throughout the first part of CS to this project.
+
+You should treat this like a real-world job assignment with your instructor as the client. Like in the real world, you may not be given all the information you need to complete the assignment up front. It is your responsibility to understand the requirements and ask questions if anything is unclear (Polya) before jumping into the code.
+
+### What is a MUD?
+>A MUD...is a multiplayer real-time virtual world, usually text-based. MUDs combine elements of role-playing games, hack and slash, player versus player, interactive fiction, and online chat. Players can read or view descriptions of rooms, objects, other players, non-player characters, and actions performed in the virtual world. Players typically interact with each other and the world by typing commands that resemble a natural language. - Wikipedia
+
+With the adventure game built in previous weeks, you have already created an application containing some of these elements (rooms, descriptions, objects, players, etc.). In this project, we will be expanding these worlds to be more interactive, provide new actions for players, display world info on a professional client site, and run the world's server on a hosted site to allow multi-player functionality.
+
+## Deliverables
+
+Each team is responsible for building and deploying a functional MUD server, migrating a unique world onto that server, and creating a visualization and navigation client interface. We provide starter Flask code with much of the server functionality implemented.
+
+
 ### Server
 
 
@@ -121,4 +137,52 @@ WebSocket is a computer communications protocol, providing full-duplex communica
   * app_id, key, secret, cluster
 * Look through the provided sample code and documentation
 
+
+## FAQs and Troubleshooting
+
+### 1. Can you show me an example of a map visualization?
+
+Here's a sample project created by [a team in CSPT2](https://confident-wright-ca0176.netlify.com):
+
+![Lambda MUD 1](img/pt2_lambdamud.png)
+
+And here's [a FT team](https://lambdaschool.com/lab-demos/lambda-mud) that went above and beyond with their use of graphics:
+
+![Lambda MUD 2](img/ex_lambdamud.png)
+
+And here's an example on iOS:
+
+![Lambda MUD Mobile](img/ios_lambdamud.jpg)
+
+### 2. How do I build something like that?
+
+Think about the algorithm to draw your map. It will probably be something like this:
+
+```
+def draw_map():
+    # Get all rooms
+    # For each room in rooms...
+        # Draw the room
+        # Draw each exit
+```
+
+What data do you need to implement this? A list of rooms, their exits, maybe their positions? The server should return all the information you need from the `rooms` endpoint. Note that backend developers may need to define some fields in the `Room` model that do not exist yet.
+
+### 3. How do I "create an interesting world"?
+
+I'll leave that to you to determine.
+
+
+### 4. What is Pusher?
+
+Pusher is a cross-platform websocket library. This will allow you to turn your app into a real MUD with live push notifications to your client. You can consider integration to be a stretch goal but it's worth the effort if you have the time: websockets are powerful!
+
+
+### 5. What will the `rooms` API endpoint look like?
+
+It's up to you what data the request will return but the API request should be something like this:
+
+```
+curl -X GET -H 'Authorization: Token cc504e88ef659843b858d61c101ca9d4f0edf979' http://lambda-mud-test.herokuapp.com/api/adv/rooms/
+```
 
