@@ -136,13 +136,6 @@ def rooms():
     return jsonify(response), 400
 
 
-
-
-@app.route('/')
-def hello():
-    return "Hello World"
-
-
 # Run the program on port 5000
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
