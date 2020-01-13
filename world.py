@@ -693,7 +693,13 @@ The Lumas have left everything! Where could they be?""", 77, 8, 7),
         self.rooms['foyer'].connect_rooms('w', self.rooms['enterprise'])
         self.rooms['narrow'].connect_rooms('n', self.rooms['treasure'])
 
-        self.starting_room = self.rooms['outside']
+        n = 1
+        r = random.randrange(1, 100)
+        for rm in self.rooms:
+            if n == r:
+                self.starting_room = self.rooms[rm]
+                break
+            n += 1    
 
 
 

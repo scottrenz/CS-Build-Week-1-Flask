@@ -146,6 +146,19 @@ def sell_item():
 @app.route('/api/adv/rooms/', methods=['GET'])
 def rooms():
     # IMPLEMENT THIS
+    player = get_player_by_header(world, request.headers.get("Authorization"))
+    if player is None:
+        response = {'error': "Malformed auth header"}
+        return jsonify(response), 500
+    x = []
+    # print(world.rooms)
+    for rm in world.rooms:
+        y = world.rooms.get(rm).get_coords()
+        z = "x="+str(y[0])+" y="+str(y[1])
+        x.append({rm: z})
+    response = x
+    return jsonify(response), 200
+
     response = {'error': "Not implement6"}
     return jsonify(response), 400
 
