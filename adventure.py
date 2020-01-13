@@ -152,9 +152,11 @@ def rooms():
         return jsonify(response), 500
     x = []
     # print(world.rooms)
+    n = 1
     for rm in world.rooms:
         y = world.rooms.get(rm).get_coords()
-        z = "x="+str(y[0])+" y="+str(y[1])
+        z = "id="+str(n)+" x="+str(y[0])+" y="+str(y[1])
+        n += 1
         x.append({rm: z})
     response = x
     return jsonify(response), 200
