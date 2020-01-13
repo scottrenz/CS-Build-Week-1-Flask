@@ -22,7 +22,6 @@ app = Flask(__name__)
 def get_player_by_header(world, auth_header):
     if auth_header is None:
         return None
-
     auth_key = auth_header.split(" ")
     if auth_key[0] != "Token" or len(auth_key) != 2:
         return None
@@ -53,13 +52,28 @@ def register():
 @app.route('/api/login/', methods=['POST'])
 def login():
     # IMPLEMENT THIS
-    response = {'error': "Not implemented"}
-    return jsonify(response), 400
+    values = request.get_json()
+    required = ['username', 'password']
+
+    if not all(k in values for k in required):
+        response = {'message': "Missing Values"}
+        return jsonify(response), 400
+
+    username = values.get('username')
+    password = values.get('password')
+    print('you entered username',username)
+    response = world.authenticate_user(username, password)
+    if 'error' in response:
+        return jsonify(response), 500
+    else:
+        return jsonify(response), 200
 
 
 @app.route('/api/adv/init/', methods=['GET'])
 def init():
-    player = get_player_by_header(world, request.headers.get("Authorization"))
+    auth_head = request.headers.get("Authorization")
+#    return auth_head
+    player = get_player_by_header(world, auth_head)
     if player is None:
         response = {'error': "Malformed auth header"}
         return jsonify(response), 500
@@ -102,40 +116,40 @@ def move():
 @app.route('/api/adv/take/', methods=['POST'])
 def take_item():
     # IMPLEMENT THIS
-    response = {'error': "Not implemented"}
+    response = {'error': "Not implement1"}
     return jsonify(response), 400
 
 @app.route('/api/adv/drop/', methods=['POST'])
 def drop_item():
     # IMPLEMENT THIS
-    response = {'error': "Not implemented"}
+    response = {'error': "Not implement2"}
     return jsonify(response), 400
 
 @app.route('/api/adv/inventory/', methods=['GET'])
 def inventory():
     # IMPLEMENT THIS
-    response = {'error': "Not implemented"}
+    response = {'error': "Not implement3"}
     return jsonify(response), 400
 
 @app.route('/api/adv/buy/', methods=['POST'])
 def buy_item():
     # IMPLEMENT THIS
-    response = {'error': "Not implemented"}
+    response = {'error': "Not implement4"}
     return jsonify(response), 400
 
 @app.route('/api/adv/sell/', methods=['POST'])
 def sell_item():
     # IMPLEMENT THIS
-    response = {'error': "Not implemented"}
+    response = {'error': "Not implement5"}
     return jsonify(response), 400
 
 @app.route('/api/adv/rooms/', methods=['GET'])
 def rooms():
     # IMPLEMENT THIS
-    response = {'error': "Not implemented"}
+    response = {'error': "Not implement6"}
     return jsonify(response), 400
 
 
 # Run the program on port 5000
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=5001)
