@@ -147,7 +147,7 @@ def take_item():
 
     take = ' ' + values.get('take').strip() + ' '
     if player.current_room.items.strip():
-        if take in riches:
+        if take in riches and player.current_room.name != 'The Replicator Room"':
             if take in player.current_room.items:
                 player.items = player.items + take
                 player.current_room.items = player.current_room.items.replace(take, ' ')

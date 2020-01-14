@@ -703,9 +703,12 @@ The Lumas have left everything! Where could they be?""", 77, 8, 7),
         n = 1
         r = random.randrange(1, 99)
         for rm in self.rooms:
-            if n == r:
-                self.starting_room = self.rooms[rm]
-                break
+            if n >= r:
+                if rm == 'replicator':
+                    pass
+                else:
+                    self.starting_room = self.rooms[rm]
+                    break
             n += 1    
 
 
