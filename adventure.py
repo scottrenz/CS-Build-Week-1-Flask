@@ -105,6 +105,13 @@ def move():
             'title': player.current_room.name,
             'description': player.current_room.description,
         }
+        if response['title'] == "Nasus' Statue":
+            response['description'] = 'You dare to arrive not fully clothed?'            
+        if response['title'] == "Nasus' Statue":
+            if ' shirt ' in player.current_room.items and ' shoes ' in player.current_room.items:
+                if ' skirt ' in player.current_room.items or ' pants ' in player.current_room.items:
+                    response['description'] = 'Congratualations, you are well dressed and have arrived to the goal!'
+                    return jsonify(response), 200
         return jsonify(response), 200
     else:
         response = {
@@ -128,6 +135,22 @@ def drop_item():
 @app.route('/api/adv/inventory/', methods=['GET'])
 def inventory():
     # IMPLEMENT THIS
+    player = get_player_by_header(world, request.headers.get("Authorization"))
+    if player is None:
+        response = {'error': "Malformed auth header"}
+        return jsonify(response), 500
+    response = {"player_items": "", "room_items": ""}    
+    if player.items.strip():
+        response["player_items"] = player.items
+    else:
+        response["player_items"] = 'no items'
+    if player.current_room.items.strip():
+        response["room_items"] = player.current_room.items
+    else:
+        response["room_items"] = 'no items'
+
+    return jsonify(response), 200
+
     response = {'error': "Not implement3"}
     return jsonify(response), 400
 

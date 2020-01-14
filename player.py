@@ -8,6 +8,21 @@ class Player:
         self.auth_key = Player.__generate_auth_key()
         self.password_hash = password_hash
         self.uuid = uuid.uuid4
+        self.items = '  '
+    def getname(self, name_in):
+        self.name = name_in
+        print(f'\nHello {name_in}')
+        return name_in
+    def additem(self, item_in):
+        self.items += " " + item_in + " "
+        self.items = self.items.replace("  "," ",99)
+        print(f'\n added {item_in} to {self.name}')
+        return item_in    
+    def removeitem(self, item_out):
+        self.items = self.items.replace(" " + item_out + " "," ",9)
+        self.items = self.items.replace("  "," ",99)
+        print(f'\n removed {item_out} from {self.name}')
+        return item_out    
 
     def __generate_auth_key():
         digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f']

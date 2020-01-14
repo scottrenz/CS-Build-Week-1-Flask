@@ -1,4 +1,5 @@
 from room import Room
+from item import Item
 from player import Player
 import random
 import math
@@ -687,8 +688,20 @@ The Lumas have left everything! Where could they be?""", 77, 8, 7),
         self.rooms['borg'].connect_rooms('s', self.rooms['puddle_jumper'])
         self.rooms['borg'].connect_rooms('e', self.rooms['shore_leave'])        
 
+        self.rooms['replicator'].items = " pants skirt shoes shirt "
+
+        treasure_items =[ ' pearl ', ' sapphire ', ' photo ', ' painting ', ' silver ', ' gold ', ' diamond ', ' ruby ', ' emerald ']
+        for i in treasure_items:
+            n = 1
+            r = random.randrange(1, 99)
+            for rm in self.rooms:
+                if n == r:
+                    self.rooms[rm].items = self.rooms[rm].items + i 
+                    break
+                n += 1    
+
         n = 1
-        r = random.randrange(1, 100)
+        r = random.randrange(1, 99)
         for rm in self.rooms:
             if n == r:
                 self.starting_room = self.rooms[rm]
