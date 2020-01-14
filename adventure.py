@@ -226,13 +226,13 @@ def buy_item():
     buy = ' ' + values.get('buy').strip() + ' '
     sell = ' ' + values.get('sell').strip() + ' '
     if player.current_room.items.strip() and player.items.strip() and buy in clothing and buy in player.current_room.items:
-                    if sell in riches and sell in player.items:
-                            player.items = player.items.replace(sell, buy)
-                            player.current_room.items = player.current_room.items.replace(buy, sell)
-                            response = {"player_items": "", "room_items": ""}    
-                            response["player_items"] = player.items
-                            response["room_items"] = player.current_room.items
-                            return jsonify(response), 200
+        if sell in riches and sell in player.items:
+            player.items = player.items.replace(sell, buy)
+            player.current_room.items = player.current_room.items.replace(buy, sell)
+            response = {"player_items": "", "room_items": ""}    
+            response["player_items"] = player.items
+            response["room_items"] = player.current_room.items
+            return jsonify(response), 200
 
     response = {'error': "The item is not available"}
     return jsonify(response), 400
@@ -254,13 +254,13 @@ def sell_item():
     buy = ' ' + values.get('buy').strip() + ' '
     sell = ' ' + values.get('sell').strip() + ' '
     if player.current_room.items.strip() and player.items.strip() and buy in clothing and buy in player.current_room.items:
-                    if sell in riches and sell in player.items:
-                            player.items = player.items.replace(sell, buy)
-                            player.current_room.items = player.current_room.items.replace(buy, sell)
-                            response = {"player_items": "", "room_items": ""}    
-                            response["player_items"] = player.items
-                            response["room_items"] = player.current_room.items
-                            return jsonify(response), 200
+        if sell in riches and sell in player.items:
+            player.items = player.items.replace(sell, buy)
+            player.current_room.items = player.current_room.items.replace(buy, sell)
+            response = {"player_items": "", "room_items": ""}    
+            response["player_items"] = player.items
+            response["room_items"] = player.current_room.items
+            return jsonify(response), 200
 
     response = {'error': "The item is not available"}
     return jsonify(response), 400
