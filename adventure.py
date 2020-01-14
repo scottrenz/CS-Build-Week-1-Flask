@@ -11,6 +11,8 @@ from room import Room
 from player import Player
 from world import World
 
+from item import Clothing, Riches
+
 # Look up decouple for config variables
 pusher = Pusher(app_id=config('PUSHER_APP_ID'), key=config('PUSHER_KEY'), secret=config('PUSHER_SECRET'), cluster=config('PUSHER_CLUSTER'))
 
@@ -123,13 +125,57 @@ def move():
 @app.route('/api/adv/take/', methods=['POST'])
 def take_item():
     # IMPLEMENT THIS
-    response = {'error': "Not implement1"}
+    player = get_player_by_header(world, request.headers.get("Authorization"))
+    if player is None:
+        response = {'error': "Malformed auth header"}
+        return jsonify(response), 500
+    values = request.get_json()
+    required = ['take']
+
+    if not all(k in values for k in required):
+        response = {'message': "Missing Values"}
+        return jsonify(response), 400
+
+    take = ' ' + values.get('take').strip() + ' '
+    if player.current_room.items.strip():
+        if take in Riches.items:
+            if take in player.current_room.items:
+                player.items = player.items + take
+                player.current_room.items.replace(take, ' ')
+                response = {"player_items": "", "room_items": ""}    
+                response["player_items"] = player.items
+                response["room_items"] = player.current_room.items
+                return jsonify(response), 200
+
+    response = {'error': "The item is not available"}
     return jsonify(response), 400
 
 @app.route('/api/adv/drop/', methods=['POST'])
 def drop_item():
     # IMPLEMENT THIS
-    response = {'error': "Not implement2"}
+    player = get_player_by_header(world, request.headers.get("Authorization"))
+    if player is None:
+        response = {'error': "Malformed auth header"}
+        return jsonify(response), 500
+    values = request.get_json()
+    required = ['drop']
+
+    if not all(k in values for k in required):
+        response = {'message': "Missing Values"}
+        return jsonify(response), 400
+
+    drop = ' ' + values.get('drop').strip() + ' '
+    if player.items.strip():
+        if drop in Riches.items:
+            if drop in player.items:
+                player.current_room.items = player.current_room.items + drop
+                player.items.replace(drop, ' ')
+                response = {"player_items": "", "room_items": ""}    
+                response["player_items"] = player.items
+                response["room_items"] = player.current_room.items
+                return jsonify(response), 200
+
+    response = {'error': "The item is not available"}
     return jsonify(response), 400
 
 @app.route('/api/adv/inventory/', methods=['GET'])
@@ -157,13 +203,65 @@ def inventory():
 @app.route('/api/adv/buy/', methods=['POST'])
 def buy_item():
     # IMPLEMENT THIS
-    response = {'error': "Not implement4"}
+    player = get_player_by_header(world, request.headers.get("Authorization"))
+    if player is None:
+        response = {'error': "Malformed auth header"}
+        return jsonify(response), 500
+    values = request.get_json()
+    required = ['buy', 'sell']
+
+    if not all(k in values for k in required):
+        response = {'message': "Missing Values"}
+        return jsonify(response), 400
+
+    buy = ' ' + values.get('buy').strip() + ' '
+    sell = ' ' + values.get('sell').strip() + ' '
+    if player.current_room.items.strip():
+        if player.items.strip():
+            if buy in Clothing.items:
+                if buy in player.current_room.items:
+                    if sell in Riches.items:
+                        if sell in players.items:
+                            player.items.replace(sell, buy)
+                            player.current_room.items.replace(buy, sell)
+                            response = {"player_items": "", "room_items": ""}    
+                            response["player_items"] = player.items
+                            response["room_items"] = player.current_room.items
+                            return jsonify(response), 200
+
+    response = {'error': "The item is not available"}
     return jsonify(response), 400
 
 @app.route('/api/adv/sell/', methods=['POST'])
 def sell_item():
     # IMPLEMENT THIS
-    response = {'error': "Not implement5"}
+    player = get_player_by_header(world, request.headers.get("Authorization"))
+    if player is None:
+        response = {'error': "Malformed auth header"}
+        return jsonify(response), 500
+    values = request.get_json()
+    required = ['buy', 'sell']
+
+    if not all(k in values for k in required):
+        response = {'message': "Missing Values"}
+        return jsonify(response), 400
+
+    buy = ' ' + values.get('buy').strip() + ' '
+    sell = ' ' + values.get('sell').strip() + ' '
+    if player.current_room.items.strip():
+        if player.items.strip():
+            if buy in Clothing.items:
+                if buy in player.current_room.items:
+                    if sell in Riches.items:
+                        if sell in players.items:
+                            player.items.replace(sell, buy)
+                            player.current_room.items.replace(buy, sell)
+                            response = {"player_items": "", "room_items": ""}    
+                            response["player_items"] = player.items
+                            response["room_items"] = player.current_room.items
+                            return jsonify(response), 200
+
+    response = {'error': "The item is not available"}
     return jsonify(response), 400
 
 @app.route('/api/adv/rooms/', methods=['GET'])
