@@ -17,7 +17,8 @@ from item import Clothing, Riches
 pusher = Pusher(app_id=config('PUSHER_APP_ID'), key=config('PUSHER_KEY'), secret=config('PUSHER_SECRET'), cluster=config('PUSHER_CLUSTER'))
 
 world = World()
-
+clothing = ' pants skirt shoes shirt '
+riches = ' pearl  sapphire photo painting silver gold diamond ruby  emerald '
 app = Flask(__name__)
 
 
@@ -83,7 +84,10 @@ def init():
     response = {
         'title': player.current_room.name,
         'description': player.current_room.description,
-    }
+        "player_items": "", "room_items": ""
+        }
+    response["player_items"] = player.items
+    response["room_items"] = player.current_room.items
     return jsonify(response), 200
 
 
@@ -106,7 +110,12 @@ def move():
         response = {
             'title': player.current_room.name,
             'description': player.current_room.description,
+            "player_items": "", "room_items": ""
         }
+        player.items = player.items.replace('  ',' ')
+        player.current_room.items = player.current_room.items.replace('  ',' ')
+        response["player_items"] = player.items
+        response["room_items"] = player.current_room.items
         if response['title'] == "Nasus' Statue":
             response['description'] = 'You dare to arrive not fully clothed?'            
         if response['title'] == "Nasus' Statue":
@@ -138,10 +147,10 @@ def take_item():
 
     take = ' ' + values.get('take').strip() + ' '
     if player.current_room.items.strip():
-        if take in Riches.items:
+        if take in riches:
             if take in player.current_room.items:
                 player.items = player.items + take
-                player.current_room.items.replace(take, ' ')
+                player.current_room.items = player.current_room.items.replace(take, ' ')
                 response = {"player_items": "", "room_items": ""}    
                 response["player_items"] = player.items
                 response["room_items"] = player.current_room.items
@@ -166,10 +175,10 @@ def drop_item():
 
     drop = ' ' + values.get('drop').strip() + ' '
     if player.items.strip():
-        if drop in Riches.items:
+        if drop in riches:
             if drop in player.items:
                 player.current_room.items = player.current_room.items + drop
-                player.items.replace(drop, ' ')
+                player.items = player.items.replace(drop, ' ')
                 response = {"player_items": "", "room_items": ""}    
                 response["player_items"] = player.items
                 response["room_items"] = player.current_room.items
@@ -216,14 +225,10 @@ def buy_item():
 
     buy = ' ' + values.get('buy').strip() + ' '
     sell = ' ' + values.get('sell').strip() + ' '
-    if player.current_room.items.strip():
-        if player.items.strip():
-            if buy in Clothing.items:
-                if buy in player.current_room.items:
-                    if sell in Riches.items:
-                        if sell in players.items:
-                            player.items.replace(sell, buy)
-                            player.current_room.items.replace(buy, sell)
+    if player.current_room.items.strip() and player.items.strip() and buy in clothing and buy in player.current_room.items:
+                    if sell in riches and sell in player.items:
+                            player.items = player.items.replace(sell, buy)
+                            player.current_room.items = player.current_room.items.replace(buy, sell)
                             response = {"player_items": "", "room_items": ""}    
                             response["player_items"] = player.items
                             response["room_items"] = player.current_room.items
@@ -248,14 +253,10 @@ def sell_item():
 
     buy = ' ' + values.get('buy').strip() + ' '
     sell = ' ' + values.get('sell').strip() + ' '
-    if player.current_room.items.strip():
-        if player.items.strip():
-            if buy in Clothing.items:
-                if buy in player.current_room.items:
-                    if sell in Riches.items:
-                        if sell in players.items:
-                            player.items.replace(sell, buy)
-                            player.current_room.items.replace(buy, sell)
+    if player.current_room.items.strip() and player.items.strip() and buy in clothing and buy in player.current_room.items:
+                    if sell in riches and sell in player.items:
+                            player.items = player.items.replace(sell, buy)
+                            player.current_room.items = player.current_room.items.replace(buy, sell)
                             response = {"player_items": "", "room_items": ""}    
                             response["player_items"] = player.items
                             response["room_items"] = player.current_room.items

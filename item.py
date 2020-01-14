@@ -22,5 +22,5 @@ class Clothing(Item):
 
 class Riches(Item):
     def __init__(self, name, description, id):
-        self.items =  ' pearl ', ' sapphire ', ' photo ', ' painting ', ' silver ', ' gold ', ' diamond ', ' ruby ', ' emerald '
+        self.items =  ' pearl  sapphire photo painting silver gold diamond ruby  emerald '
     
